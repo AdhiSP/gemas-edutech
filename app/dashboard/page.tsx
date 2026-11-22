@@ -20,7 +20,8 @@ import {
   Users,
   TrendingUp,
   Clock,
-  CheckCircle2,
+  Menu,
+  X,
 } from "lucide-react";
 
 interface SyllabusStep {
@@ -117,7 +118,6 @@ const learningMaps: LearningMapItem[] = [
   },
 ];
 
-// Data Statistik Pengunjung Dummy
 const visitorWeeklyData = [
   { day: "Sen", count: 142, height: "65%" },
   { day: "Sel", count: 198, height: "85%" },
@@ -142,6 +142,9 @@ export default function DashboardPage() {
   const [searchInput, setSearchInput] = useState("");
   const [appliedSearch, setAppliedSearch] = useState("");
   const [selectedMapId, setSelectedMapId] = useState<string | null>(null);
+  
+  // STATE MENU DRAWER MOBILE
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -167,30 +170,64 @@ export default function DashboardPage() {
     learningMaps.find((item) => item.id === selectedMapId) || null;
 
   return (
-    <div className="flex h-screen bg-slate-50 font-sans text-slate-800">
-      {/* SIDEBAR KIRI INTERAKTIF GEMAS EDUTECH */}
-      <aside className="w-64 bg-white border-r border-slate-200 p-6 flex flex-col justify-between h-screen sticky top-0 shrink-0">
+    <div className="flex flex-col md:flex-row h-screen bg-slate-50 font-sans text-slate-800 overflow-x-hidden">
+      
+      {/* HEADER KHUSUS MOBILE (TAMPIL HANYA DI HP) */}
+      <header className="md:hidden bg-white border-b border-slate-200 p-4 flex items-center justify-between sticky top-0 z-30 shadow-sm">
+        <Link href="/dashboard" className="flex items-center gap-2.5">
+          <img
+            src="/logo.png"
+            alt="Gemas Edutech Logo"
+            className="w-8 h-8 object-contain rounded-lg"
+            onError={(e) => { e.currentTarget.style.display = "none"; }}
+          />
+          <span className="text-base font-black text-slate-900 tracking-tight">
+            Gemas<span className="text-emerald-600">Edutech</span>
+          </span>
+        </Link>
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="p-2 text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+          aria-label="Toggle Menu"
+        >
+          {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      </header>
+
+      {/* OVERLAY BACKGROUND MOBILE MENU */}
+      {isMobileMenuOpen && (
+        <div
+          onClick={() => setIsMobileMenuOpen(false)}
+          className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 md:hidden"
+        />
+      )}
+
+      {/* SIDEBAR NAVIGATION (RESPONSIF DESKTOP & MOBILE DRAWER) */}
+      <aside
+        className={`fixed md:sticky top-0 left-0 z-50 md:z-auto h-screen w-64 bg-white border-r border-slate-200 p-6 flex flex-col justify-between shrink-0 transition-transform duration-300 ease-in-out ${
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        }`}
+      >
         <div>
-          {/* BRANDING LOGO RESMI */}
-          <Link href="/dashboard" className="flex items-center gap-3 mb-6">
-            <img
-              src="/logo.png"
-              alt="Gemas Edutech Logo"
-              className="w-11 h-11 object-contain rounded-xl drop-shadow-sm"
-              onError={(e) => {
-                // Fallback jika gambar logo belum dimasukkan ke public/logo.png
-                e.currentTarget.style.display = "none";
-              }}
-            />
-            <div className="flex flex-col">
-              <span className="text-lg font-black text-slate-900 tracking-tight leading-none">
-                Gemas<span className="text-emerald-600">Edutech</span>
-              </span>
-              <span className="text-[9px] font-extrabold text-slate-400 tracking-wider uppercase mt-1">
-                Generasi Emas
-              </span>
-            </div>
-          </Link>
+          {/* BRANDING LOGO DESKTOP */}
+          <div className="hidden md:flex items-center justify-between mb-6">
+            <Link href="/dashboard" className="flex items-center gap-3">
+              <img
+                src="/logo.png"
+                alt="Gemas Edutech Logo"
+                className="w-11 h-11 object-contain rounded-xl drop-shadow-sm"
+                onError={(e) => { e.currentTarget.style.display = "none"; }}
+              />
+              <div className="flex flex-col">
+                <span className="text-lg font-black text-slate-900 tracking-tight leading-none">
+                  Gemas<span className="text-emerald-600">Edutech</span>
+                </span>
+                <span className="text-[9px] font-extrabold text-slate-400 tracking-wider uppercase mt-1">
+                  Generasi Emas
+                </span>
+              </div>
+            </Link>
+          </div>
 
           <div className="space-y-6">
             <div>
@@ -199,7 +236,7 @@ export default function DashboardPage() {
               </p>
               <nav className="space-y-1">
                 <button
-                  onClick={() => setActiveTab("peta")}
+                  onClick={() => { setActiveTab("peta"); setIsMobileMenuOpen(false); }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs transition-all ${
                     activeTab === "peta"
                       ? "bg-sky-50 text-sky-700 border border-sky-200 shadow-sm"
@@ -210,7 +247,7 @@ export default function DashboardPage() {
                 </button>
 
                 <button
-                  onClick={() => setActiveTab("jalur")}
+                  onClick={() => { setActiveTab("jalur"); setIsMobileMenuOpen(false); }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs transition-all ${
                     activeTab === "jalur"
                       ? "bg-sky-50 text-sky-700 border border-sky-200 shadow-sm"
@@ -222,13 +259,14 @@ export default function DashboardPage() {
 
                 <Link
                   href="/dashboard/generator-modul"
+                  onClick={() => setIsMobileMenuOpen(false)}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs transition-all text-slate-600 hover:bg-slate-50"
                 >
                   <Sparkles size={18} className="text-red-600" /> Generator Modul
                 </Link>
 
                 <button
-                  onClick={() => setActiveTab("kisi")}
+                  onClick={() => { setActiveTab("kisi"); setIsMobileMenuOpen(false); }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs transition-all ${
                     activeTab === "kisi"
                       ? "bg-sky-50 text-sky-700 border border-sky-200 shadow-sm"
@@ -240,6 +278,7 @@ export default function DashboardPage() {
 
                 <Link
                   href="/dashboard/contoh-soal"
+                  onClick={() => setIsMobileMenuOpen(false)}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs transition-all text-slate-600 hover:bg-slate-50"
                 >
                   <BookOpen size={18} /> Contoh Soal
@@ -247,6 +286,7 @@ export default function DashboardPage() {
 
                 <Link
                   href="/dashboard/quiz"
+                  onClick={() => setIsMobileMenuOpen(false)}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs transition-all text-slate-600 hover:bg-slate-50"
                 >
                   <CheckSquare size={18} /> Quiz
@@ -254,13 +294,14 @@ export default function DashboardPage() {
 
                 <Link
                   href="/dashboard/game"
+                  onClick={() => setIsMobileMenuOpen(false)}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs transition-all text-slate-600 hover:bg-slate-50"
                 >
                   <Gamepad2 size={18} className="text-emerald-600" /> Game Pembelajaran
                 </Link>
 
                 <button
-                  onClick={() => setActiveTab("media")}
+                  onClick={() => { setActiveTab("media"); setIsMobileMenuOpen(false); }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs transition-all ${
                     activeTab === "media"
                       ? "bg-sky-50 text-sky-700 border border-sky-200 shadow-sm"
@@ -270,9 +311,8 @@ export default function DashboardPage() {
                   <PlayCircle size={18} /> Media
                 </button>
 
-                {/* FITUR BARU: ANALISIS PENGUNJUNG (DIBAWAH MEDIA) */}
                 <button
-                  onClick={() => setActiveTab("analisis")}
+                  onClick={() => { setActiveTab("analisis"); setIsMobileMenuOpen(false); }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs transition-all ${
                     activeTab === "analisis"
                       ? "bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm"
@@ -286,8 +326,8 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Profil Panel Guru */}
-        <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl flex items-center gap-3">
+        {/* PROFIL GURU PANEL */}
+        <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl flex items-center gap-3 mt-4">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-600 to-emerald-600 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-sm">
             A
           </div>
@@ -299,18 +339,19 @@ export default function DashboardPage() {
       </aside>
 
       {/* AREA KONTEN UTAMA */}
-      <main className="flex-1 p-8 overflow-y-auto">
+      <main className="flex-1 p-4 md:p-8 overflow-y-auto w-full">
         {/* 1. TAB: PETA BELAJAR */}
         {activeTab === "peta" && (
           <div className="max-w-5xl space-y-6">
             <div>
-              <h1 className="text-2xl font-black text-slate-900">Peta Belajar</h1>
+              <h1 className="text-xl md:text-2xl font-black text-slate-900">Peta Belajar</h1>
               <p className="text-xs text-slate-500 mt-1 leading-relaxed">
                 Peta topik pembelajaran yang saling terhubung untuk melihat alur materi dan langkah berikutnya setelah menyelesaikan suatu topik.
               </p>
             </div>
 
-            <form onSubmit={handleSearchSubmit} className="flex gap-2">
+            {/* FORM PENCARIAN RESPONSIF */}
+            <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row gap-2">
               <div className="flex items-center gap-2.5 bg-white border border-slate-300 rounded-xl px-4 py-2.5 flex-1 shadow-sm focus-within:border-sky-600">
                 <Search size={16} className="text-slate-400 shrink-0" />
                 <input
@@ -323,20 +364,21 @@ export default function DashboardPage() {
               </div>
               <button
                 type="submit"
-                className="bg-sky-600 hover:bg-sky-700 text-white px-5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all shrink-0"
+                className="bg-sky-600 hover:bg-sky-700 text-white px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all shrink-0"
               >
                 <Search size={15} /> Cari
               </button>
             </form>
 
-            <div className="flex flex-wrap gap-2.5">
+            {/* FILTER KATEGORI RESPONSIF */}
+            <div className="flex flex-wrap gap-2">
               {(["Semua", "Pelajaran Sekolah", "Pelajaran Teknologi"] as const).map((cat) => {
                 const active = categoryFilter === cat;
                 return (
                   <button
                     key={cat}
                     onClick={() => setCategoryFilter(cat)}
-                    className={`px-4 py-2.5 rounded-xl text-xs font-bold border transition-all ${
+                    className={`px-3.5 py-2 rounded-xl text-xs font-bold border transition-all ${
                       active
                         ? "bg-sky-50 text-sky-700 border-sky-500 shadow-sm"
                         : "bg-white hover:bg-slate-50 text-slate-700 border-slate-200"
@@ -348,8 +390,9 @@ export default function DashboardPage() {
               })}
             </div>
 
+            {/* KARTU PETA BELAJAR (GRID RESPONSIF 1 KOLOM DI HP, 3 KOLOM DI LAPTOP) */}
             {filteredMaps.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredMaps.map((item, idx) => {
                   const isCardSelected = selectedMap?.id === item.id;
                   const cardTint =
@@ -403,8 +446,9 @@ export default function DashboardPage() {
               </div>
             )}
 
+            {/* DETAIL SILABUS (RESPONSIF) */}
             {selectedMap && (
-              <div className="bg-white p-6 md:p-7 rounded-3xl border border-slate-200 shadow-sm space-y-5">
+              <div className="bg-white p-5 md:p-7 rounded-3xl border border-slate-200 shadow-sm space-y-5">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
                   <div>
                     <div className="flex items-center gap-2">
@@ -449,7 +493,7 @@ export default function DashboardPage() {
                   ))}
                 </div>
 
-                <div className="flex flex-wrap gap-3 pt-1">
+                <div className="flex flex-wrap gap-2.5 pt-1">
                   <Link
                     href="/dashboard/contoh-soal"
                     className="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all"
@@ -502,7 +546,7 @@ export default function DashboardPage() {
         {/* 3. TAB: KISI-KISI UJIAN */}
         {activeTab === "kisi" && (
           <div className="space-y-6">
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               <div>
                 <label className="text-[10px] font-bold text-slate-400 block mb-1 uppercase">Tingkatan</label>
                 <select className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs font-semibold text-slate-700 focus:outline-none">
@@ -539,7 +583,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {[
                 { title: "Kisi-Kisi ASAS Ganjil Kelas 9 SMP", questions: "30 PG + 5 Essay" },
                 { title: "Kisi-Kisi ASAS Ganjil Kelas 8 SMP", questions: "30 PG + 5 Essay" },
@@ -574,7 +618,7 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* 5. TAB BARU: ANALISIS PENGUNJUNG & AKTIVITAS (ANALYTICS & CALENDAR) */}
+        {/* 5. TAB: ANALISIS PENGUNJUNG */}
         {activeTab === "analisis" && (
           <div className="max-w-5xl space-y-6">
             <div>
@@ -589,7 +633,6 @@ export default function DashboardPage() {
               </p>
             </div>
 
-            {/* RINGKASAN METRIK (STAT CARDS) */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4">
                 <div className="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
@@ -631,10 +674,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* GRAFIK PENGUNJUNG DAN KALENDER AKTIVITAS BULANAN */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              
-              {/* GRAFIK BATANG TRAFIK MINGGUAN */}
               <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-6 flex flex-col justify-between">
                 <div className="flex items-center justify-between">
                   <div>
@@ -644,7 +684,6 @@ export default function DashboardPage() {
                   <span className="text-xs font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-xl">7 Hari Terakhir</span>
                 </div>
 
-                {/* BAR CHART GRAPH */}
                 <div className="h-44 flex items-end justify-between gap-3 pt-6 pb-2 px-2 border-b border-slate-100">
                   {visitorWeeklyData.map((item, idx) => (
                     <div key={idx} className="flex-1 flex flex-col items-center gap-2 h-full justify-end group">
@@ -666,7 +705,6 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* KALENDER LOG AKTIVITAS BULANAN (HEATMAP STYLE) */}
               <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
                 <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                   <div className="flex items-center gap-2">
@@ -680,7 +718,6 @@ export default function DashboardPage() {
                   Warna hijau menandakan hari dengan aktivitas kuis &amp; pembelajaran tertinggi.
                 </p>
 
-                {/* MATRIX GRID KALENDER 30 HARI */}
                 <div className="grid grid-cols-7 gap-2 pt-1">
                   {calendarDays.map((d) => {
                     let dayStyle = "bg-slate-100 text-slate-400";
