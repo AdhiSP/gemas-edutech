@@ -41,7 +41,7 @@ const quizPackages: QuizPackage[] = [
     subject: "Informatika",
     classLevel: "Kelas 7 SMP",
     questionsCount: 30,
-    accessKey: "SMP7KAPIN",
+    accessKey: "INF7GEMAS",
     teacher: "Adhi Surya Putra, S.Kom.",
     essayQuestions: [
       "Sebutkan 4 pilar utama dalam Berpikir Komputasional!",
@@ -243,7 +243,7 @@ const quizPackages: QuizPackage[] = [
     subject: "Informatika",
     classLevel: "Kelas 8 SMP",
     questionsCount: 30,
-    accessKey: "SMP8KAPIN",
+    accessKey: "INF8GEMAS",
     teacher: "Adhi Surya Putra, S.Kom.",
     essayQuestions: [
       "Berpikir komputasional memiliki 4 fondasi utama yaitu Dekomposisi, Pengenalan Pola, Abstraksi, dan Algoritma. Jelaskan secara singkat apa yang dimaksud dengan Dekomposisi dan Algoritma!",
@@ -465,7 +465,7 @@ const quizPackages: QuizPackage[] = [
     subject: "Informatika",
     classLevel: "Kelas 9 SMP",
     questionsCount: 30,
-    accessKey: "SMP9KAPIN",
+    accessKey: "INF9GEMAS",
     teacher: "Adhi Surya Putra, S.Kom.",
     essayQuestions: [
       "Jelaskan perbedaan mendasar antara Perangkat Keras (Hardware) dan Perangkat Lunak (Software), serta berikan masing-masing 2 contohnya!",
@@ -712,7 +712,7 @@ const quizPackages: QuizPackage[] = [
     subject: "Informatika",
     classLevel: "Kelas 10 SMA",
     questionsCount: 30,
-    accessKey: "SMA10KAPIN",
+    accessKey: "INF10GEMAS",
     teacher: "Adhi Surya Putra, S.Kom.",
     essayQuestions: [
       "Dalam materi ekosistem periksa fakta, jelaskan minimal 3 langkah verifikasi yang harus dilakukan ketika menerima pesan berantai yang mengklaim sebuah temuan informasi luar biasa agar tidak terjebak menyebarkan hoaks!",
@@ -1034,7 +1034,7 @@ const quizPackages: QuizPackage[] = [
     subject: "Informatika",
     classLevel: "Kelas 11 SMA",
     questionsCount: 30,
-    accessKey: "SMA11KAPIN",
+    accessKey: "INF11GEMAS",
     teacher: "Adhi Surya Putra, S.Kom.",
     essayQuestions: [
       "Jelaskan apa yang dimaksud dengan Membaca Lateral (Lateral Reading) dan mengapa keterampilan ini sangat penting saat mencari informasi digital!",
@@ -1302,7 +1302,7 @@ const quizPackages: QuizPackage[] = [
     subject: "Informatika",
     classLevel: "Kelas 12 SMA",
     questionsCount: 30,
-    accessKey: "SMA12KAPIN",
+    accessKey: "INF12GEMAS",
     teacher: "Adhi Surya Putra, S.Kom.",
     essayQuestions: [
       "Tuliskan contoh penulisan rumus IF bertingkat di Excel untuk menentukan nilai dengan kriteria: Jika rata-rata >= 90 maka \"A\", jika >= 80 maka \"B\", dan selain itu \"C\". Jelaskan juga kegunaan dari fungsi RANK!",
@@ -1588,7 +1588,7 @@ const quizPackages: QuizPackage[] = [
     subject: "Koding & AI", // <--- SUBJECT KHUSUS KODING & AI
     classLevel: "Kelas 7 SMP",
     questionsCount: 30,
-    accessKey: "KODING7KAPIN",
+    accessKey: "KODING7GEMAS",
     teacher: "Adhi Surya Putra, S.Kom.",
     essayQuestions: [
       "Sebutkan 3 macam shortcut (kombinasi tombol keyboard) di Microsoft Word yang sudah kamu pelajari beserta fungsinya masing-masing!",
@@ -1839,7 +1839,7 @@ const quizPackages: QuizPackage[] = [
     subject: "Koding & AI",
     classLevel: "Kelas 8 SMP",
     questionsCount: 30,
-    accessKey: "KODING8KAPIN",
+    accessKey: "KODING8GEMAS",
     teacher: "Adhi Surya Putra, S.Kom.",
     essayQuestions: [
       "Jelaskan secara singkat dengan bahasamu sendiri, apa yang dimaksud dengan Komputasi!",
